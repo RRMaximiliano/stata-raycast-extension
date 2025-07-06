@@ -1,15 +1,6 @@
-import { 
-  Action, 
-  ActionPanel, 
-  Detail, 
-  Form, 
-  Icon, 
-  showToast, 
-  Toast, 
-  useNavigation 
-} from "@raycast/api";
+import { Action, ActionPanel, Detail, Form, Icon, showToast, Toast, useNavigation } from "@raycast/api";
 import { useState } from "react";
-import { writeFileSync, unlinkSync } from "fs";
+import { writeFileSync, unlinkSync, readFileSync, existsSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 import { exec } from "child_process";
@@ -66,11 +57,11 @@ export default function Command() {
 
   async function runStataCode(stataCode: string) {
     setIsLoading(true);
-    
+
     try {
       const tempFile = join(tmpdir(), `raycast_stata_${Date.now()}.do`);
       const logFile = join(tmpdir(), `raycast_stata_${Date.now()}.log`);
-      
+
       // Create do file with log
       const doFileContent = `
 log using "${logFile}", replace text
@@ -78,16 +69,17 @@ ${stataCode}
 log close
 exit
 `;
-      
+
       writeFileSync(tempFile, doFileContent);
-      
+
       await showToast({
         style: Toast.Style.Animated,
         title: "Running Stata code...",
       });
 
-      exec(`/Applications/Stata/StataMP.app/Contents/MacOS/StataMP -b do "${tempFile}"`, 
-        { timeout: 30000 }, 
+      exec(
+        `/Applications/Stata/StataMP.app/Contents/MacOS/StataMP -b do "${tempFile}"`,
+        { timeout: 30000 },
         (error, stdout, stderr) => {
           try {
             let output = "";
@@ -99,9 +91,8 @@ exit
 
             // Try to read log file
             try {
-              const fs = require("fs");
-              if (fs.existsSync(logFile)) {
-                output = fs.readFileSync(logFile, "utf8");
+              if (existsSync(logFile)) {
+                output = readFileSync(logFile, "utf8");
               } else {
                 output = stdout || "No output generated";
               }
@@ -118,10 +109,14 @@ exit
             push(<ResultView result={result} />);
 
             // Cleanup
-            [tempFile, logFile].forEach(file => {
-              try { unlinkSync(file); } catch {}
+            [tempFile, logFile].forEach((file) => {
+              try {
+                unlinkSync(file);
+              } catch (cleanupError) {
+                // Ignore cleanup errors
+                console.warn("Failed to cleanup file:", file);
+              }
             });
-
           } catch (cleanupError) {
             showToast({
               style: Toast.Style.Failure,
@@ -131,7 +126,7 @@ exit
           } finally {
             setIsLoading(false);
           }
-        }
+        },
       );
     } catch (error) {
       await showToast({
@@ -148,17 +143,13 @@ exit
       isLoading={isLoading}
       actions={
         <ActionPanel>
-          <Action.SubmitForm
-            title="Run Code"
-            icon={Icon.Play}
-            onSubmit={() => runStataCode(code)}
-          />
+          <Action.SubmitForm title="Run Code" icon={Icon.Play} onSubmit={() => runStataCode(code)} />
           {commonCommands.map((cmd, index) => (
             <Action
               key={index}
               title={`Insert: ${cmd.title}`}
               icon={Icon.Plus}
-              onAction={() => setCode(prev => prev + (prev ? "\n" : "") + cmd.code)}
+              onAction={() => setCode((prev) => prev + (prev ? "\n" : "") + cmd.code)}
             />
           ))}
         </ActionPanel>

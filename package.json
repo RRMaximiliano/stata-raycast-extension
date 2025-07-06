@@ -4,7 +4,7 @@
   "title": "Stata",
   "description": "Powerful Stata integration for Raycast - manage .do files, run code, and access documentation",
   "icon": "stata-icon.png",
-  "author": "rony_rodriguez_ramirez",
+  "author": "your_raycast_username",
   "license": "MIT",
   "commands": [
     {

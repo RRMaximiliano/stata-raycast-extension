@@ -50,10 +50,10 @@ export default function Command() {
             subtitle={file}
             icon={Icon.Document}
             accessories={[
-              { 
+              {
                 text: fs.existsSync(file) ? "Available" : "Missing",
-                icon: fs.existsSync(file) ? Icon.Check : Icon.XMarkCircle
-              }
+                icon: fs.existsSync(file) ? Icon.Check : Icon.XMarkCircle,
+              },
             ]}
             actions={
               <ActionPanel>
@@ -63,18 +63,18 @@ export default function Command() {
                   onAction={() => {
                     try {
                       if (!fs.existsSync(file)) {
-                        showToast({ 
-                          style: Toast.Style.Failure, 
+                        showToast({
+                          style: Toast.Style.Failure,
                           title: "File not found",
-                          message: "This file no longer exists"
+                          message: "This file no longer exists",
                         });
                         return;
                       }
                       execSync(`open -a StataMP "${file}"`);
-                      showToast({ 
-                        style: Toast.Style.Success, 
+                      showToast({
+                        style: Toast.Style.Success,
                         title: "Opening in Stata",
-                        message: path.basename(file)
+                        message: path.basename(file),
                       });
                     } catch {
                       showToast({ style: Toast.Style.Failure, title: "Failed to open file" });
@@ -88,10 +88,10 @@ export default function Command() {
                     if (fs.existsSync(file)) {
                       showInFinder(file);
                     } else {
-                      showToast({ 
-                        style: Toast.Style.Failure, 
+                      showToast({
+                        style: Toast.Style.Failure,
                         title: "File not found",
-                        message: "This file no longer exists"
+                        message: "This file no longer exists",
                       });
                     }
                   }}

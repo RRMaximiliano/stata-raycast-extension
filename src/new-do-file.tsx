@@ -1,13 +1,4 @@
-import { 
-  Action, 
-  ActionPanel, 
-  Form, 
-  Icon, 
-  showToast, 
-  Toast,
-  showInFinder,
-  open 
-} from "@raycast/api";
+import { Action, ActionPanel, Form, Icon, showToast, Toast, showInFinder, open } from "@raycast/api";
 import { useState } from "react";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
@@ -44,7 +35,7 @@ summarize
 
 * Save results
 * save "results.dta", replace
-`
+`,
   },
   {
     name: "Data Cleaning",
@@ -74,7 +65,7 @@ set more off
 
 * Save cleaned data
 * save "cleaned_data.dta", replace
-`
+`,
   },
   {
     name: "Regression Analysis",
@@ -108,7 +99,7 @@ estat vif
 
 * Robust regression
 regress dependent_var independent_var1 independent_var2, robust
-`
+`,
   },
   {
     name: "Panel Data Analysis",
@@ -140,7 +131,7 @@ hausman fe re
 
 * First difference regression
 reg D.(dependent_var independent_var1 independent_var2)
-`
+`,
   },
   {
     name: "Time Series Analysis",
@@ -174,7 +165,7 @@ pperron variable
 * Forecasting
 * predict forecast, y
 * tsline variable forecast
-`
+`,
   },
   {
     name: "Empty Template",
@@ -191,8 +182,8 @@ set more off
 
 * Your code here
 
-`
-  }
+`,
+  },
 ];
 
 export default function Command() {
@@ -203,7 +194,7 @@ export default function Command() {
 
   function handleTemplateChange(templateName: string) {
     setSelectedTemplate(templateName);
-    const template = templates.find(t => t.name === templateName);
+    const template = templates.find((t) => t.name === templateName);
     if (template) {
       setCustomContent(template.content);
     } else {
@@ -229,11 +220,11 @@ export default function Command() {
         return;
       }
 
-      const template = templates.find(t => t.name === values.selectedTemplate);
+      const template = templates.find((t) => t.name === values.selectedTemplate);
       const content = template ? template.content : customContent;
 
       // Ensure file has .do extension
-      const fileNameWithExt = values.fileName.endsWith('.do') ? values.fileName : `${values.fileName}.do`;
+      const fileNameWithExt = values.fileName.endsWith(".do") ? values.fileName : `${values.fileName}.do`;
       const fullPath = join(values.filePath, fileNameWithExt);
 
       // Create directory if it doesn't exist
@@ -268,7 +259,6 @@ export default function Command() {
         // If opening in Stata fails, show in Finder
         showInFinder(fullPath);
       }
-
     } catch (error) {
       await showToast({
         style: Toast.Style.Failure,
@@ -282,16 +272,8 @@ export default function Command() {
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm
-            title="Create Do File"
-            icon={Icon.NewDocument}
-            onSubmit={createDoFile}
-          />
-          <Action
-            title="Show in Finder"
-            icon={Icon.Finder}
-            onAction={() => showInFinder(filePath)}
-          />
+          <Action.SubmitForm title="Create Do File" icon={Icon.NewDocument} onSubmit={createDoFile} />
+          <Action title="Show in Finder" icon={Icon.Finder} onAction={() => showInFinder(filePath)} />
         </ActionPanel>
       }
     >
@@ -303,7 +285,7 @@ export default function Command() {
         onChange={setFileName}
         info="File name without extension (.do will be added automatically)"
       />
-      
+
       <Form.TextField
         id="filePath"
         title="Save Location"
@@ -320,19 +302,12 @@ export default function Command() {
         onChange={handleTemplateChange}
       >
         {templates.map((template) => (
-          <Form.Dropdown.Item
-            key={template.name}
-            value={template.name}
-            title={template.name}
-            icon={Icon.Document}
-          />
+          <Form.Dropdown.Item key={template.name} value={template.name} title={template.name} icon={Icon.Document} />
         ))}
       </Form.Dropdown>
 
       {selectedTemplate && (
-        <Form.Description
-          text={templates.find(t => t.name === selectedTemplate)?.description || ""}
-        />
+        <Form.Description text={templates.find((t) => t.name === selectedTemplate)?.description || ""} />
       )}
 
       <Form.TextArea
