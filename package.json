@@ -1,0 +1,69 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "stata",
+  "title": "Stata",
+  "description": "Powerful Stata integration for Raycast - manage .do files, run code, and access documentation",
+  "icon": "stata-icon.png",
+  "author": "rony_rodriguez_ramirez",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "stata-do-file",
+      "title": "Open Do-file Editor",
+      "description": "Open Stata Do-file Editor",
+      "mode": "no-view"
+    },
+    {
+      "name": "recent-stata-do-files",
+      "title": "Recent Do Files",
+      "description": "List and open recently used .do files",
+      "mode": "view"
+    },
+    {
+      "name": "run-stata-code",
+      "title": "Run Stata Code",
+      "description": "Execute Stata code snippets quickly",
+      "mode": "view"
+    },
+    {
+      "name": "new-do-file",
+      "title": "New Do File",
+      "description": "Create a new .do file with templates",
+      "mode": "view"
+    },
+    {
+      "name": "stata-help",
+      "title": "Stata Help & Documentation",
+      "description": "Search Stata commands and documentation",
+      "mode": "view"
+    },
+    {
+      "name": "browse-datasets",
+      "title": "Browse Datasets",
+      "description": "Find and open Stata datasets (.dta files)",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.100.2",
+    "@raycast/utils": "^1.17.0",
+    "plist": "^3.1.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "22.13.10",
+    "@types/plist": "^3.0.5",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
