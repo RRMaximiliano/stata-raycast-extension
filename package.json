@@ -2,10 +2,13 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "stata",
   "title": "Stata",
-  "description": "Powerful Stata integration for Raycast - manage .do files, run code, and access documentation",
+  "description": "Comprehensive Stata integration: quick file access, smart templates, and advanced command reference",
   "icon": "stata-icon.png",
-  "author": "your_raycast_username",
+  "author": "rrmaximiliano",
+  "categories": ["Developer Tools", "Productivity"],
   "license": "MIT",
+  "version": "1.0.0",
+  "keywords": ["stata", "statistics", "data analysis", "econometrics", "research"],
   "commands": [
     {
       "name": "open-new-do-file",

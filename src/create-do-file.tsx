@@ -1,9 +1,7 @@
 import { Action, ActionPanel, Form, Icon, showToast, Toast, showInFinder, open } from "@raycast/api";
 import { useState } from "react";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
-import { homedir } from "os";
-import { exec } from "child_process";
+import { writeFileSync, existsSync } from "fs";
+import { join } from "path";
 
 interface DoFileTemplate {
   name: string;
@@ -190,7 +188,7 @@ set more off
 export default function Command() {
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
-  const [filePath, setFilePath] = useState<string>(join(homedir(), "Documents", "Stata"));
+  const [projectPath, setProjectPath] = useState<string[]>([]);
   const [customContent, setCustomContent] = useState<string>("");
 
   function handleTemplateChange(templateName: string) {
@@ -203,39 +201,7 @@ export default function Command() {
     }
   }
 
-  async function selectFolder() {
-    try {
-      const script = `
-        choose folder with prompt "Select folder to save the do file:" default location (path to documents folder)
-      `;
-
-      exec(`osascript -e '${script}'`, (error, stdout) => {
-        if (error) {
-          showToast({
-            style: Toast.Style.Failure,
-            title: "Failed to select folder",
-          });
-          return;
-        }
-
-        // Convert AppleScript path to POSIX path
-        const posixScript = `POSIX path of (POSIX file "${stdout.trim()}")`;
-        exec(`osascript -e '${posixScript}'`, (posixError, posixStdout) => {
-          if (!posixError) {
-            setFilePath(posixStdout.trim());
-          }
-        });
-      });
-    } catch (error) {
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Failed to open folder selector",
-        message: String(error),
-      });
-    }
-  }
-
-  async function createDoFile(values: { fileName: string; filePath: string; selectedTemplate: string }) {
+  async function createDoFile(values: { fileName: string; projectPath: string[]; selectedTemplate: string }) {
     try {
       if (!values.fileName) {
         await showToast({
@@ -245,10 +211,13 @@ export default function Command() {
         return;
       }
 
-      if (!values.filePath) {
+      // Get the selected directory path (FilePicker returns an array)
+      const selectedPath = values.projectPath[0];
+      if (!selectedPath) {
         await showToast({
           style: Toast.Style.Failure,
-          title: "Please enter a file path",
+          title: "No location selected",
+          message: "Please select a location to save the do file",
         });
         return;
       }
@@ -258,20 +227,14 @@ export default function Command() {
 
       // Ensure file has .do extension
       const fileNameWithExt = values.fileName.endsWith(".do") ? values.fileName : `${values.fileName}.do`;
-      const fullPath = join(values.filePath, fileNameWithExt);
-
-      // Create directory if it doesn't exist
-      const dir = dirname(fullPath);
-      if (!existsSync(dir)) {
-        mkdirSync(dir, { recursive: true });
-      }
+      const fullPath = join(selectedPath, fileNameWithExt);
 
       // Check if file already exists
       if (existsSync(fullPath)) {
         await showToast({
           style: Toast.Style.Failure,
           title: "File already exists",
-          message: "Please choose a different name",
+          message: `A file named "${fileNameWithExt}" already exists at the specified location`,
         });
         return;
       }
@@ -306,13 +269,6 @@ export default function Command() {
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Create Do File" icon={Icon.NewDocument} onSubmit={createDoFile} />
-          <Action
-            title="Browse Folder"
-            icon={Icon.Folder}
-            onAction={selectFolder}
-            shortcut={{ modifiers: ["cmd"], key: "b" }}
-          />
-          <Action title="Show in Finder" icon={Icon.Finder} onAction={() => showInFinder(filePath)} />
         </ActionPanel>
       }
     >
@@ -325,12 +281,15 @@ export default function Command() {
         info="File name without extension (.do will be added automatically)"
       />
 
-      <Form.TextField
-        id="filePath"
+      <Form.FilePicker
+        id="projectPath"
         title="Save Location"
-        placeholder="~/Documents/Stata"
-        value={filePath}
-        onChange={setFilePath}
+        allowMultipleSelection={false}
+        canChooseDirectories={true}
+        canChooseFiles={false}
+        value={projectPath}
+        onChange={setProjectPath}
+        info="Select the folder where you want to save the do file"
       />
 
       <Form.Dropdown

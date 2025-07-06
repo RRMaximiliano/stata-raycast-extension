@@ -1,72 +1,111 @@
-# Stata for Raycast
+# Stata Extension for Raycast
 
-A streamlined Stata integration extension for Raycast that enhances your Stata workflow with quick access to files, creation tools, and documentation.
+A comprehensive Stata integration extension for Raycast that streamlines your statistical analysis workflow with quick file access, intelligent templates, and comprehensive documentation.
 
-## Features
+![Stata Extension Demo](assets/extension-icon.png)
 
-### 🚀 **Quick Actions**
-- **Open New Do File**: Opens Stata and creates a new do file (works whether Stata is running or not)
-- **Recent Do Files**: Browse and open your recently used .do files with status indicators
-- **Recent Datasets**: Access recently used .dta files from Stata preferences
+## ✨ Features
 
-### 📁 **File Management**
-- **Create Do File**: Create new .do files with professional templates and folder browser:
-  - Basic Analysis
-  - Data Cleaning
-  - Regression Analysis
-  - Panel Data Analysis
-  - Time Series Analysis
-  - Custom templates
-  - Built-in folder selection (⌘B) for save location
+### 🚀 **Quick File Access**
+- **Open New Do File**: Instantly open Stata with a new do file (detects if Stata is running)
+- **Recent Do Files**: Browse and open recently used .do files with availability indicators
+- **Recent Datasets**: Access recently used .dta files directly from Stata preferences
 
-### 📚 **Documentation & Help**
-- **Stata Help & Documentation**: Searchable command reference with syntax examples
-- Categorized commands (Data Management, Statistics, Graphics, etc.)
-- Copy syntax and examples directly to clipboard
-- Open official Stata help for any command
+### 📁 **Smart File Creation**
+- **Create Do File**: Professional templates with native folder picker
+  - Basic Analysis Template
+  - Data Cleaning Template  
+  - Regression Analysis Template
+  - Panel Data Analysis Template
+  - Time Series Analysis Template
+  - Custom content editing
+- **Native Folder Browser**: Click to select save location (no more typing paths!)
 
-## Commands
+### 📚 **Advanced Documentation**
+- **Stata Help & Documentation**: Comprehensive command reference
+  - Advanced commands (reshape, merge, egen, xtreg, margins, etc.)
+  - Real-world examples with copy-to-clipboard functionality
+  - Pro tips and best practices
+  - Direct links to official Stata documentation
+  - Category filtering and search
 
-| Command | Description | Type |
-|---------|-------------|------|
-| `Open New Do File` | Open Stata and create new do file | Quick Action |
-| `Recent Do Files` | List and open recently used .do files | File Browser |
-| `Recent Datasets` | List and open recently used .dta files | File Browser |
-| `Create Do File` | Create new .do files with templates | File Creator |
-| `Stata Help & Documentation` | Search commands and documentation | Reference |
+## 🎯 Commands Overview
 
-## Workflow
+| Command | Description | Mode | Use Case |
+|---------|-------------|------|----------|
+| **Open New Do File** | Launch Stata + new do file | Action | Quick analysis start |
+| **Recent Do Files** | Browse recent .do files | List | Continue existing work |
+| **Recent Datasets** | Browse recent .dta files | List | Quick data access |
+| **Create Do File** | Template-based file creation | Form | Structured project setup |
+| **Stata Help** | Advanced command reference | List | Syntax lookup & learning |
 
-### Daily Usage
-1. **Open New Do File** - Start your analysis with a fresh do file
-2. **Recent Do Files** - Continue working on existing projects  
-3. **Recent Datasets** - Quickly load datasets you've been working with
-4. **Stata Help** - Look up command syntax when needed
+## 🚀 Quick Start
 
-### Project Setup
-1. **Create Do File** - Use templates for structured project files
-2. **Browse Folder** (⌘B) - Choose exactly where to save your files
-3. **Template Selection** - Pick the right template for your analysis type
+### Installation
+1. Clone this repository or download the extension
+2. Open Raycast and navigate to Extensions
+3. Import the Stata extension
+4. Enjoy streamlined Stata workflow!
 
+### Daily Workflow
+```
+1. 🎯 Open New Do File → Start fresh analysis
+2. 📁 Recent Do Files → Continue existing projects  
+3. 📊 Recent Datasets → Load your working data
+4. 📚 Stata Help → Look up command syntax
+5. 📝 Create Do File → Start structured projects
+```
+
+## 💡 Key Features Detail
+
+### Smart Do File Management
+- **Availability Status**: See which files exist vs. are missing
+- **Quick Open**: Direct integration with Stata application
+- **Path Display**: Full file paths for context
+
+### Intelligent Templates
+The Create Do File command includes professionally structured templates:
+
+```stata
+* Basic Analysis Template
+clear all
+set more off
+* Set working directory
+cd "~/Documents/Stata"
+* Load data
+* use "dataset.dta", clear
+* [Additional structured sections...]
+```
+
+### Advanced Command Reference
+Unlike basic command lists, our help system covers:
+- **Complex commands**: reshape, merge, egen, xtreg, margins
+- **Programming constructs**: foreach loops, macros, conditionals  
+- **Advanced statistics**: IV regression, panel data, time series
+- **Real examples**: Copy-paste ready code snippets
+- **Pro tips**: Best practices and common gotchas
+
+## 🛠️ Technical Details
+
+### Requirements
+- **macOS**: Extension uses native AppleScript integration
+- **Stata**: Any version (tested with StataMP 19)
+- **Raycast**: Latest version recommended
+
+### Data Sources
+- **Recent Files**: Reads from Stata preferences (`com.stata.stata19.plist`)
+- **Do Files**: From `NSRecentDocumentPaths`
+- **Datasets**: From `Recent_Files.X` keys (handles quoted paths)
+
+### File Operations
+- **Path Resolution**: Supports cloud storage paths (Dropbox, Google Drive)
+- **Existence Checking**: Real-time file availability status
+- **Smart Opening**: AppleScript integration for reliable Stata launching
 ## Requirements
 
 - macOS
 - Stata (tested with StataMP)
 - Raycast
-
-## Installation
-
-1. Clone or download this extension
-2. Open in Raycast
-3. Build and install
-
-## Usage Tips
-
-- **Recent Files**: Both do files and datasets show availability status
-- **Smart Opening**: Open New Do File detects if Stata is already running
-- **Template System**: Speeds up new project creation with best practices
-- **Folder Browser**: Use ⌘B in Create Do File to select save location
-- **Quick Actions**: All commands optimized for speed and efficiency
 
 ## Development
 
@@ -84,6 +123,31 @@ npm run build
 npm run lint
 ```
 
+## Project Structure
+
+```
+src/
+├── open-new-do-file.ts      # Quick Stata + do file launcher
+├── recent-stata-do-files.tsx # Recent .do files browser
+├── recent-datasets.tsx       # Recent .dta files browser  
+├── create-do-file.tsx       # Template-based file creator
+└── stata-help.tsx           # Advanced command reference
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
 ## License
 
 MIT License
+
+## Acknowledgments
+
+- Built for the Stata community
+- Inspired by real workflow needs
+- Optimized for speed and efficiency
