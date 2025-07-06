@@ -3,6 +3,7 @@ import { useState } from "react";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import { homedir } from "os";
+import { exec } from "child_process";
 
 interface DoFileTemplate {
   name: string;
@@ -202,6 +203,38 @@ export default function Command() {
     }
   }
 
+  async function selectFolder() {
+    try {
+      const script = `
+        choose folder with prompt "Select folder to save the do file:" default location (path to documents folder)
+      `;
+
+      exec(`osascript -e '${script}'`, (error, stdout) => {
+        if (error) {
+          showToast({
+            style: Toast.Style.Failure,
+            title: "Failed to select folder",
+          });
+          return;
+        }
+
+        // Convert AppleScript path to POSIX path
+        const posixScript = `POSIX path of (POSIX file "${stdout.trim()}")`;
+        exec(`osascript -e '${posixScript}'`, (posixError, posixStdout) => {
+          if (!posixError) {
+            setFilePath(posixStdout.trim());
+          }
+        });
+      });
+    } catch (error) {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to open folder selector",
+        message: String(error),
+      });
+    }
+  }
+
   async function createDoFile(values: { fileName: string; filePath: string; selectedTemplate: string }) {
     try {
       if (!values.fileName) {
@@ -273,6 +306,12 @@ export default function Command() {
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Create Do File" icon={Icon.NewDocument} onSubmit={createDoFile} />
+          <Action
+            title="Browse Folder"
+            icon={Icon.Folder}
+            onAction={selectFolder}
+            shortcut={{ modifiers: ["cmd"], key: "b" }}
+          />
           <Action title="Show in Finder" icon={Icon.Finder} onAction={() => showInFinder(filePath)} />
         </ActionPanel>
       }

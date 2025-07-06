@@ -8,9 +8,9 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "stata-do-file",
-      "title": "Open Do-file Editor",
-      "description": "Open Stata Do-file Editor",
+      "name": "open-new-do-file",
+      "title": "Open New Do File",
+      "description": "Open Stata and create a new do file",
       "mode": "no-view"
     },
     {
@@ -20,14 +20,14 @@
       "mode": "view"
     },
     {
-      "name": "run-stata-code",
-      "title": "Run Stata Code",
-      "description": "Execute Stata code snippets quickly",
+      "name": "recent-datasets",
+      "title": "Recent Datasets",
+      "description": "List and open recently used .dta files",
       "mode": "view"
     },
     {
-      "name": "new-do-file",
-      "title": "New Do File",
+      "name": "create-do-file",
+      "title": "Create Do File",
       "description": "Create a new .do file with templates",
       "mode": "view"
     },
@@ -35,12 +35,6 @@
       "name": "stata-help",
       "title": "Stata Help & Documentation",
       "description": "Search Stata commands and documentation",
-      "mode": "view"
-    },
-    {
-      "name": "browse-datasets",
-      "title": "Browse Datasets",
-      "description": "Find and open Stata datasets (.dta files)",
       "mode": "view"
     }
   ],
