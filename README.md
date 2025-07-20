@@ -2,7 +2,7 @@
 
 A comprehensive Stata integration extension for Raycast that streamlines your statistical analysis workflow with quick file access, intelligent templates, and comprehensive documentation.
 
-![Stata Extension Demo](assets/extension-icon.png)
+![Stata Extension Demo](assets/stata-icon.png)
 
 ## ✨ Features
 
@@ -145,9 +145,3 @@ src/
 ## License
 
 MIT License
-
-## Acknowledgments
-
-- Built for the Stata community
-- Inspired by real workflow needs
-- Optimized for speed and efficiency
